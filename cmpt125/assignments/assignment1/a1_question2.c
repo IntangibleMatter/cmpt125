@@ -10,6 +10,11 @@
 // current index.
 bool rangedCheckforSorted(int array[], unsigned int size, int leftIndex,
 						  int rightIndex) {
+	if (rightIndex < leftIndex) {
+		int temp = rightIndex;
+		rightIndex = leftIndex;
+		leftIndex = temp;
+	}
 	if (leftIndex < 0) {
 		leftIndex = 0;
 	}
