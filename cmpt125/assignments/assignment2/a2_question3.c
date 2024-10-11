@@ -1,6 +1,7 @@
 #include "a2_question2.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 // shoutout to wikipedia
 const char *COLOR_TABLE[] = {
@@ -43,14 +44,16 @@ int superhero_count = 0;
 void deleteSuperhero(Superhero *superhero);
 void printColored(char *string);
 void printHeader();
-int loadHeroes(Superhero **heroes);
+int loadHeroes(Superhero **heroes[]);
 void trimPrefix(char *string, char *prefix);
 void printHero(Superhero *superhero);
 
 int main(int argc, char *argv[]) {
 	printHeader();
-	Superhero **heroes;
-	int heroCount = loadHeroes(heroes);
+	Superhero **heroes = malloc(0);
+	printf("heroes = %p\n", heroes);
+	int heroCount = loadHeroes(&heroes);
+	printf("made it here\n");
 	/*printf("argc: %d\n", argc);
 	char str[256];
 	while (1) {
@@ -61,34 +64,52 @@ int main(int argc, char *argv[]) {
 		}
 	}*/
 	// tada
+	for (int i = 0; i < heroCount; i++) {
+		printf("Superhero #%d\n", i);
+		printHero(heroes[i]);
+	}
+	for (int i = 0; i < heroCount; i++) {
+		deleteSuperhero(heroes[i]);
+	}
+	free(heroes);
 	return EXIT_SUCCESS;
 }
 
 void trimPrefix(char *string, char *prefix) {}
 
-int loadHeroes(Superhero **heroes) {
+int loadHeroes(Superhero **heroes[]) {
+	printf("help\n");
 	char lines[4][300]; // extra fifth line is for the blank separators
 	int heroCount = 0;
 	int done = 0;
+
+	/*if (**heroes == NULL) {
+		**heroes = malloc(sizeof(Superhero *));
+	}*/
+	//*heroes = realloc(*heroes, heroCount * sizeof(Superhero *));
 	while (!done) {
 		// printf(COLOR_TABLE[BG_CYAN]);
 		// printf(COLOR_TABLE[BLACK]);
-		// printf("Herocount: %d\n", heroCount);
+		printf("Herocount: %d\n", heroCount);
 		// printf(COLOR_TABLE[RESET]);
 		// printf("checking\n");
-		void *donecheck;
+		char donecheck[4] = "\0";
 		// TODO: off by one error due to separating blank lines-- fix!
 		for (int i = 0; i < 4; i++) {
 			fgets(lines[i], 300, stdin);
 			// printf("getting lines\n");
 		}
-		if (fgets(donecheck, 10, stdin) == NULL) {
+		if (fgets(donecheck, 4, stdin) == NULL) {
 			// printf("donecheck == null\n");
 			done = 1;
 		} // else {
-		// printf("create hero\n");
 		heroCount++;
-		heroes = realloc(heroes, heroCount * sizeof(Superhero *));
+		printf("create hero\n");
+
+		// TODO: FIX THIS DEAR GOD WHY WONT IT WORK
+		printf("current heroes pointer: %p\n", *heroes);
+		**heroes = realloc(**heroes, (10 + heroCount) * sizeof(Superhero *));
+		printf("updated heroes pointer: %p\n", *heroes);
 		// printf("realloced\n");
 		trimPrefix(lines[0], "**Name:** ");
 		trimPrefix(lines[1], "**Height:** ");
@@ -116,18 +137,20 @@ int loadHeroes(Superhero **heroes) {
 				}
 			}
 		}
-		// printf("Creating hero %d...\n", heroCount);
-		heroes[heroCount - 1] = createSuperhero(
+		printf("Creating hero %d...\n", heroCount);
+		*heroes[heroCount - 1] = createSuperhero(
 			lines[0], heightFeet, heightInches, lines[2], lines[3]);
-		// printf("Created hero %d\n", heroCount);
-		printHero(heroes[heroCount - 1]);
+		printf("Created hero %d\n", heroCount);
+		printHero(*heroes[heroCount - 1]);
 		//}
 	}
+	printf("returning");
 	return heroCount;
 }
 
 void printHero(Superhero *superhero) {
 	printf("%s", COLOR_TABLE[GREEN]);
+	printf("__adr__: %p\n", superhero);
 	printf("NAME: %s", superhero->name);
 	printf("HEIGHT: %d feet, %d in\n", superhero->feetInHeight,
 		   superhero->inchesInHeight);
