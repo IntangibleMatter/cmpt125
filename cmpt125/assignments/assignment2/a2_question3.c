@@ -90,23 +90,27 @@ void trimPrefix(char *string, char *prefix) {
 }
 
 int loadHeroes(Superhero **heroes[]) {
-	printf("help\n");
+	FILE *herofile;
+	// credit to https://www.programiz.com/c-programming/c-file-input-output
+	// for the refresher
+	if ((herofile = fopen("./superheros.txt", "r")) == NULL) {
+		printf("Error! File 'superheros.txt' does not exist! Exiting!\n");
+		fclose(herofile);
+		return 0;
+	}
+
 	char lines[4][300]; // extra fifth line is for the blank separators
 	int heroCount = 0;
 	int done = 0;
 
-	printf("heroes = %p\n", heroes);
-	printf("*heroes = %p\n", *heroes);
-	printf("**heroes = %p\n", **heroes);
-
 	while (!done) {
 		char donecheck[4] = "\0";
 		for (int i = 0; i < 4; i++) {
-			fgets(lines[i], 300, stdin);
+			fgets(lines[i], 300, herofile);
 		}
 		// handle the extra line in between heroes and stop when the file is
 		// done.
-		if (fgets(donecheck, 4, stdin) == NULL) {
+		if (fgets(donecheck, 4, herofile) == NULL) {
 			done = 1;
 		}
 		heroCount++;
@@ -141,6 +145,7 @@ int loadHeroes(Superhero **heroes[]) {
 		(*heroes)[heroCount - 1] = createSuperhero(
 			lines[0], heightFeet, heightInches, lines[2], lines[3]);
 	}
+	fclose(herofile);
 	*heroes = *heroes;
 	return heroCount;
 }
