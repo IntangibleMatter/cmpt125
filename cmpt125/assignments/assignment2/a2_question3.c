@@ -45,29 +45,23 @@ void deleteSuperhero(Superhero *superhero);
 void printColored(char *string);
 void printHeader();
 int loadHeroes(Superhero **heroes[]);
+int min(int a, int b);
 void trimPrefix(char *string, char *prefix);
 void printHero(Superhero *superhero);
 
 int main(int argc, char *argv[]) {
 	printHeader();
 	Superhero **heroes = malloc(0);
-	printf("heroes = %p\n", heroes);
 	int heroCount = loadHeroes(&heroes);
-	printf("made it here\n");
-	/*printf("argc: %d\n", argc);
-	char str[256];
-	while (1) {
-		void *string = fgets(str, 256, stdin);
-		printf("%s---!!---", str);
-		if (string == NULL) {
-			break;
-		}
-	}*/
-	// tada
+	// Print them all out
 	for (int i = 0; i < heroCount; i++) {
-		printf("Superhero #%d\n", i);
+		printColored("=================================================\n");
+		printf("%s", COLOR_TABLE[RED]);
+		printf("Superhero #%d\n", i + 1);
+		printf("%s", COLOR_TABLE[RESET]);
 		printHero(heroes[i]);
 	}
+	// remove all the heroes
 	for (int i = 0; i < heroCount; i++) {
 		deleteSuperhero(heroes[i]);
 	}
@@ -75,7 +69,25 @@ int main(int argc, char *argv[]) {
 	return EXIT_SUCCESS;
 }
 
-void trimPrefix(char *string, char *prefix) {}
+int min(int a, int b) { return (a < b) ? a : b; }
+
+void trimPrefix(char *string, char *prefix) {
+	for (int i = 0; i < min(strlen(string), strlen(prefix)); i++) {
+		if (string[i] != prefix[i]) {
+			// prefix not complete, return
+			return;
+		}
+		i++;
+	}
+
+	int offset = strlen(prefix);
+
+	// less than or equal to so that the \0 gets moved too
+	for (int i = 0; i < strlen(string) - offset; i++) {
+		string[i] = string[i + offset];
+	}
+	string[strlen(string) - offset] = '\0';
+}
 
 int loadHeroes(Superhero **heroes[]) {
 	printf("help\n");
@@ -83,34 +95,24 @@ int loadHeroes(Superhero **heroes[]) {
 	int heroCount = 0;
 	int done = 0;
 
-	/*if (**heroes == NULL) {
-		**heroes = malloc(sizeof(Superhero *));
-	}*/
-	//*heroes = realloc(*heroes, heroCount * sizeof(Superhero *));
+	printf("heroes = %p\n", heroes);
+	printf("*heroes = %p\n", *heroes);
+	printf("**heroes = %p\n", **heroes);
+
 	while (!done) {
-		// printf(COLOR_TABLE[BG_CYAN]);
-		// printf(COLOR_TABLE[BLACK]);
-		printf("Herocount: %d\n", heroCount);
-		// printf(COLOR_TABLE[RESET]);
-		// printf("checking\n");
 		char donecheck[4] = "\0";
-		// TODO: off by one error due to separating blank lines-- fix!
 		for (int i = 0; i < 4; i++) {
 			fgets(lines[i], 300, stdin);
-			// printf("getting lines\n");
 		}
+		// handle the extra line in between heroes and stop when the file is
+		// done.
 		if (fgets(donecheck, 4, stdin) == NULL) {
-			// printf("donecheck == null\n");
 			done = 1;
-		} // else {
+		}
 		heroCount++;
-		printf("create hero\n");
 
-		// TODO: FIX THIS DEAR GOD WHY WONT IT WORK
-		printf("current heroes pointer: %p\n", *heroes);
-		**heroes = realloc(**heroes, (10 + heroCount) * sizeof(Superhero *));
-		printf("updated heroes pointer: %p\n", *heroes);
-		// printf("realloced\n");
+		*heroes = realloc(*heroes, heroCount * sizeof(Superhero *));
+
 		trimPrefix(lines[0], "**Name:** ");
 		trimPrefix(lines[1], "**Height:** ");
 		trimPrefix(lines[2], "**Superpower:** ");
@@ -120,7 +122,6 @@ int loadHeroes(Superhero **heroes[]) {
 
 		int i = 0;
 		while (lines[1][i] != '\0') {
-			// printf("fixing number\n");
 			char chr = lines[1][i];
 			i++;
 			if (chr == '\'') {
@@ -137,20 +138,15 @@ int loadHeroes(Superhero **heroes[]) {
 				}
 			}
 		}
-		printf("Creating hero %d...\n", heroCount);
-		*heroes[heroCount - 1] = createSuperhero(
+		(*heroes)[heroCount - 1] = createSuperhero(
 			lines[0], heightFeet, heightInches, lines[2], lines[3]);
-		printf("Created hero %d\n", heroCount);
-		printHero(*heroes[heroCount - 1]);
-		//}
 	}
-	printf("returning");
+	*heroes = *heroes;
 	return heroCount;
 }
 
 void printHero(Superhero *superhero) {
 	printf("%s", COLOR_TABLE[GREEN]);
-	printf("__adr__: %p\n", superhero);
 	printf("NAME: %s", superhero->name);
 	printf("HEIGHT: %d feet, %d in\n", superhero->feetInHeight,
 		   superhero->inchesInHeight);
@@ -181,6 +177,19 @@ void printColored(char *string) {
 };
 
 void printHeader() {
+	/*
+	 * Looks like this:
+	 * ╔═════════════════════════════════════════════════════════════════════╗
+	 * ╠════════════════════════► LYRIC MOYSEY-RUBIN ◄═══════════════════════╣
+	 * ╠════════════════════════════► 301614885 ◄════════════════════════════╣
+	 * ╠═══════════════════════════► lwm2@sfu.ca ◄═══════════════════════════╣
+	 * ╚═════════════════════════════════════════════════════════════════════╝
+	 *
+	 * Though this version has been shortened because of the 80-character line
+	 * limit
+	 * Gotta do the unicode codepoints because c.
+	 * */
+
 	printColored("\u2554\
 \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\
 \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\
