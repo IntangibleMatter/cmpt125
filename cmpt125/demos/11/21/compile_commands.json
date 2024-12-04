@@ -1,0 +1,16 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++11",
+      "-Wall",
+      "-o",
+      "main",
+      "main.cpp"
+    ],
+    "directory": "/home/intangible/Dev/programming/multi/compsci/cmpt125/demos/11/21",
+    "file": "/home/intangible/Dev/programming/multi/compsci/cmpt125/demos/11/21/main.cpp",
+    "output": "/home/intangible/Dev/programming/multi/compsci/cmpt125/demos/11/21/main"
+  }
+]

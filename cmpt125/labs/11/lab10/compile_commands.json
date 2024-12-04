@@ -1,0 +1,16 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-Wall",
+      "-std=c++11",
+      "-o",
+      "containers",
+      "containers.cpp"
+    ],
+    "directory": "/home/intangible/Dev/programming/multi/compsci/cmpt125/labs/11/lab10",
+    "file": "/home/intangible/Dev/programming/multi/compsci/cmpt125/labs/11/lab10/containers.cpp",
+    "output": "/home/intangible/Dev/programming/multi/compsci/cmpt125/labs/11/lab10/containers"
+  }
+]

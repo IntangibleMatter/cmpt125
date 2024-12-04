@@ -1,0 +1,44 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-Wall",
+      "-std=c++11",
+      "-o",
+      "test1",
+      "a4_superheroLookupSystem.cpp"
+    ],
+    "directory": "/home/intangible/Dev/programming/multi/compsci/cmpt125/assignments/assignment4",
+    "file": "/home/intangible/Dev/programming/multi/compsci/cmpt125/assignments/assignment4/a4_superheroLookupSystem.cpp",
+    "output": "/home/intangible/Dev/programming/multi/compsci/cmpt125/assignments/assignment4/test1"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-Wall",
+      "-std=c++11",
+      "-o",
+      "test1",
+      "a4_superherolib.cpp"
+    ],
+    "directory": "/home/intangible/Dev/programming/multi/compsci/cmpt125/assignments/assignment4",
+    "file": "/home/intangible/Dev/programming/multi/compsci/cmpt125/assignments/assignment4/a4_superherolib.cpp",
+    "output": "/home/intangible/Dev/programming/multi/compsci/cmpt125/assignments/assignment4/test1"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-Wall",
+      "-std=c++11",
+      "-o",
+      "test1",
+      "a4_superheroList.cpp"
+    ],
+    "directory": "/home/intangible/Dev/programming/multi/compsci/cmpt125/assignments/assignment4",
+    "file": "/home/intangible/Dev/programming/multi/compsci/cmpt125/assignments/assignment4/a4_superheroList.cpp",
+    "output": "/home/intangible/Dev/programming/multi/compsci/cmpt125/assignments/assignment4/test1"
+  }
+]
